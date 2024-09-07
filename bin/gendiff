@@ -33,7 +33,7 @@ try {
   $firstData = parseJsonFile($firstFile);
   $secondData = parseJsonFile($secondFile);
 
-  $diff = Differ\Differ\genDiff($firstData, $secondData);
+  $diff = \Hexlet\Code\Differ\genDiff($firstData, $secondData);
   echo $diff . PHP_EOL;
 } catch (Exception $e) {
   echo "Error: " . $e->getMessage() . PHP_EOL;

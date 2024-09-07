@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: validate
+      run: make validate
+
+    - name: setup
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+
+    - name: install
+      run: make install
+
+    - name: lint
+      run: make lint
+
+    - name: test
+      run: make test

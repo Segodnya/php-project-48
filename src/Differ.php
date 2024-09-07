@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\Differ;
+namespace Hexlet\Code\Differ;
 
 function genDiff(array $data1, array $data2): string
 {
