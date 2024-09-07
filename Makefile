@@ -13,6 +13,9 @@ lint:
 test:
 	composer exec --verbose phpunit tests
 
+test-with-coverage:
+	vendor/bin/phpunit --coverage-clover tests/reports/coverage.xml
+
 # Example usage
 run:
 	./bin/gendiff ./assets/file1.json ./assets/file2.json
