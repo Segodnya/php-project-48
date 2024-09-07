@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/fileParser.php';
+require_once __DIR__ . '/../src/Differ.php';
 
 $doc = <<<DOC
 Generate diff
@@ -32,10 +33,8 @@ try {
   $firstData = parseJsonFile($firstFile);
   $secondData = parseJsonFile($secondFile);
 
-  // Result
-  print_r($firstData);
-  print_r($secondData);
-
+  $diff = Differ\Differ\genDiff($firstData, $secondData);
+  echo $diff . PHP_EOL;
 } catch (Exception $e) {
   echo "Error: " . $e->getMessage() . PHP_EOL;
   exit(1);

@@ -5,8 +5,12 @@
   "license": "MIT",
   "autoload": {
     "files": [
-      "src/fileParser.php"
-    ]
+      "src/fileParser.php",
+      "src/Differ.php"
+    ],
+    "psr-4": {
+      "Differ\\": "src/"
+    }
   },
   "authors": [
     {
