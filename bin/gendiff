@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+
+<?php
+
+// Не забывай вызвать chmod +x bin/gendiff
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+Options:
+  -h --help     Show this screen
+  -v --version  Show version
+DOC;
+
+Docopt::handle($doc);

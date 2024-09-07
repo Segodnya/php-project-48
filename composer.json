@@ -1,0 +1,22 @@
+{
+  "name": "hexlet/code",
+  "description": "Hexlet Diff Generator Project",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {},
+  "authors": [
+    {
+      "name": "segodnya",
+      "email": "immortalsteel@gmail.com"
+    }
+  ],
+  "require": {
+    "docopt/docopt": "^1.0"
+  },
+  "bin": [
+    "bin/gendiff"
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.10"
+  }
+}
