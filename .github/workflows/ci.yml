@@ -25,6 +25,9 @@ jobs:
     - name: lint
       run: make lint
 
+    - name: stan
+      run: make stan
+
     - name: test
       run: make test
 

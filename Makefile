@@ -19,6 +19,9 @@ test-coverage:
 test-coverage-text:
 	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-text
 
+stan:
+	vendor/bin/phpstan analyse src tests bin --level 9
+
 # Example usage
 run:
 	./bin/gendiff ./assets/file1.json ./assets/file2.json
