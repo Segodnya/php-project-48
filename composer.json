@@ -3,7 +3,11 @@
   "description": "Hexlet Diff Generator Project",
   "type": "project",
   "license": "MIT",
-  "autoload": {},
+  "autoload": {
+    "files": [
+      "src/fileParser.php"
+    ]
+  },
   "authors": [
     {
       "name": "segodnya",

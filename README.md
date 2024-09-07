@@ -1,7 +1,19 @@
 # Diff Generator
 
+## Manual
+
 ```
 ./bin/gendiff -h
+```
+
+## Usage
+
+```
+./bin/gendiff ./assets/file1.json ./assets/file2.json
+```
+or
+```
+make run
 ```
 
 ### Hexlet tests and linter status:

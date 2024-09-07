@@ -2,9 +2,10 @@
 
 <?php
 
-// Не забывай вызвать chmod +x bin/gendiff
+// Don't forget to run chmod +x bin/gendiff
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/fileParser.php';
 
 $doc = <<<DOC
 Generate diff
@@ -20,4 +21,22 @@ Options:
   --format <fmt>  Report format [default: stylish]
 DOC;
 
-Docopt::handle($doc);
+$arguments = Docopt::handle($doc);
+
+// Get paths to files
+$firstFile = $arguments['<firstFile>'];
+$secondFile = $arguments['<secondFile>'];
+
+// Parse JSON files
+try {
+  $firstData = parseJsonFile($firstFile);
+  $secondData = parseJsonFile($secondFile);
+
+  // Result
+  print_r($firstData);
+  print_r($secondData);
+
+} catch (Exception $e) {
+  echo "Error: " . $e->getMessage() . PHP_EOL;
+  exit(1);
+}
