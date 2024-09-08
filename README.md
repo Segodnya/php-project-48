@@ -12,11 +12,13 @@
 ## Usage
 
 ```
-./bin/gendiff ./assets/file1.json ./assets/file2.json
+./bin/gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
+./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml
 ```
 or
 ```
-make run
+make run-json
+make run-yaml
 ```
 
 ## ASCII Cast
