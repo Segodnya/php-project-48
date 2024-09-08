@@ -2,10 +2,19 @@
 
 namespace Hexlet\Code\Differ;
 
-function genDiff(array $data1, array $data2): string
+/**
+ * Generates a diff between two arrays.
+ *
+ * @param array<string, mixed> $data1
+ * @param array<string, mixed> $data2
+ * @return string
+ */
+function diff(array $data1, array $data2): string
 {
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    sort($keys); // Sort keys alphabetically
+
+    // Sort keys alphabetically
+    sort($keys);
 
     $result = [];
 

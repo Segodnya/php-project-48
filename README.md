@@ -21,4 +21,10 @@ make run
 
 ## ASCII Cast
 
+- JSON
+
 [![asciicast](https://asciinema.org/a/675093.svg)](https://asciinema.org/a/675093)
+
+- YAML
+
+[![asciicast](https://asciinema.org/a/675184.svg)](https://asciinema.org/a/675184)

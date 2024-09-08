@@ -14,7 +14,7 @@ test:
 	composer exec --verbose phpunit tests
 
 test-coverage:
-	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
+	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.html
 
 test-coverage-text:
 	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-text
@@ -23,5 +23,9 @@ stan:
 	vendor/bin/phpstan analyse src tests bin --level 9
 
 # Example usage
-run:
-	./bin/gendiff ./assets/file1.json ./assets/file2.json
+
+run-json:
+	./bin/gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
+
+run-yaml:
+	./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml

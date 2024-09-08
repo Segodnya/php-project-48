@@ -4,9 +4,18 @@
 
 // Don't forget to run chmod +x bin/gendiff
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../src/fileParser.php';
-require_once __DIR__ . '/../src/Differ.php';
+use function Differ\Differ\getFileData;
+use function Hexlet\Code\Differ\diff;
+
+$autoloadPathGlobal = __DIR__ . '/../../../autoload.php';
+$autoloadPathLocal = __DIR__ . '/../vendor/autoload.php';
+
+if (file_exists($autoloadPathGlobal)) {
+    require_once $autoloadPathGlobal;
+} else {
+    require_once $autoloadPathLocal;
+}
+
 
 $doc = <<<DOC
 Generate diff
@@ -24,16 +33,21 @@ DOC;
 
 $arguments = Docopt::handle($doc);
 
-// Get paths to files
-$firstFile = $arguments['<firstFile>'];
-$secondFile = $arguments['<secondFile>'];
+$firstFilePath = $arguments['<firstFile>'];
+$secondFilePath = $arguments['<secondFile>'];
 
-// Parse JSON files
+// Validate paths
+if (!is_string($firstFilePath) || !is_string($secondFilePath)) {
+  echo "Error: Both file paths must be provided as strings." . PHP_EOL;
+  exit(1);
+}
+
+// Parse files
 try {
-  $firstData = parseJsonFile($firstFile);
-  $secondData = parseJsonFile($secondFile);
+  $firstData = getFileData($firstFilePath);
+  $secondData = getFileData($secondFilePath);
 
-  $diff = \Hexlet\Code\Differ\genDiff($firstData, $secondData);
+  $diff = diff($firstData, $secondData);
   echo $diff . PHP_EOL;
 } catch (Exception $e) {
   echo "Error: " . $e->getMessage() . PHP_EOL;
