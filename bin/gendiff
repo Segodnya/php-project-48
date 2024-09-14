@@ -6,6 +6,7 @@
 
 use function Differ\Differ\getFileData;
 use function Hexlet\Code\Differ\diff;
+use function Hexlet\Code\Formatters\format;
 
 $autoloadPathGlobal = __DIR__ . '/../../../autoload.php';
 $autoloadPathLocal = __DIR__ . '/../vendor/autoload.php';
@@ -47,8 +48,13 @@ try {
   $firstData = getFileData($firstFilePath);
   $secondData = getFileData($secondFilePath);
 
-  $diff = diff($firstData, $secondData);
-  echo $diff . PHP_EOL;
+  $diff = format(diff($firstData, $secondData));
+
+  if (is_array($diff)) {
+      echo json_encode($diff, JSON_PRETTY_PRINT);
+  } else {
+      echo $diff;
+  }
 } catch (Exception $e) {
   echo "Error: " . $e->getMessage() . PHP_EOL;
   exit(1);

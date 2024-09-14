@@ -29,3 +29,6 @@ run-json:
 
 run-yaml:
 	./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml
+
+run-recursive:
+	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=plain

@@ -30,3 +30,7 @@ make run-yaml
 - YAML
 
 [![asciicast](https://asciinema.org/a/675184.svg)](https://asciinema.org/a/675184)
+
+- Recursive
+
+[![asciicast](https://asciinema.org/a/676076.svg)](https://asciinema.org/a/676076)
