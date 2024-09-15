@@ -28,7 +28,11 @@ function makeStylish(array $diffTree, int $depth = 1): string
             switch ($type) {
                 case 'nested':
                     $children = $node['children'] ?? [];
-                    assert(is_array($children));
+
+                    if (!is_array($children)) {
+                        throw new \InvalidArgumentException("Children must be an array for nested type");
+                    }
+
                     return "{$indent}{$key}: {\n" . makeStylish($children, $depth + 1) . "\n{$indent}}";
 
                 case 'unchanged':
