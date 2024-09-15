@@ -34,6 +34,7 @@ $arguments = Docopt::handle($doc);
 
 $firstFilePath = $arguments['<firstFile>'];
 $secondFilePath = $arguments['<secondFile>'];
+$format = (string) $arguments['--format'];
 
 // Validate paths
 if (!is_string($firstFilePath) || !is_string($secondFilePath)) {
@@ -43,7 +44,7 @@ if (!is_string($firstFilePath) || !is_string($secondFilePath)) {
 
 // Parse files
 try {
-    $diff = genDiff($firstFilePath, $secondFilePath);
+    $diff = genDiff($firstFilePath, $secondFilePath, $format);
 
     echo $diff . PHP_EOL;
 } catch (Exception $e) {

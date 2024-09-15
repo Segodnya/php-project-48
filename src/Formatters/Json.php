@@ -2,7 +2,13 @@
 
 namespace Differ\Formatters\Json;
 
-function formatJson(array $diffTree): string
+/**
+ * Summary of Differ\Formatters\Json\formatJson
+ * @param mixed $diffTree
+ * @throws \Exception
+ * @return string
+ */
+function formatJson($diffTree): string
 {
     $result = json_encode($diffTree);
     if (is_string($result)) {
