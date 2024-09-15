@@ -7,7 +7,7 @@ namespace Hexlet\Code\Formatters\Plain;
  */
 function formatPlain(array $diff): string
 {
-    return implode("\n", formatPlainItems($diff));
+    return rtrim(implode("\n", formatPlainItems($diff)));
 }
 
 /**
@@ -20,27 +20,31 @@ function formatPlainItems(array $items, string $path = ''): array
     $result = [];
 
     foreach ($items as $item) {
-        $key = is_scalar($item['key'])
-            ? (string) $item['key']
-            : throw new \InvalidArgumentException('Key must be scalar');
+        if (!is_array($item) || !isset($item['key']) || !isset($item['type'])) {
+            continue;
+        }
 
+        $key = is_scalar($item['key']) ? (string) $item['key'] : '[complex value]';
         $newPath = $path ? "{$path}.{$key}" : $key;
 
         switch ($item['type']) {
             case 'add':
-                $value = formatValue($item['value']);
+                $value = formatValue($item['value'] ?? null);
                 $result[] = "Property '{$newPath}' was added with value: {$value}";
                 break;
+
             case 'deleted':
                 $result[] = "Property '{$newPath}' was removed";
                 break;
+
             case 'changed':
-                $oldValue = formatValue($item['oldValue']);
-                $newValue = formatValue($item['newValue']);
+                $oldValue = formatValue($item['oldValue'] ?? null);
+                $newValue = formatValue($item['newValue'] ?? null);
                 $result[] = "Property '{$newPath}' was updated. From {$oldValue} to {$newValue}";
                 break;
+
             case 'nested':
-                if (is_array($item['children'])) {
+                if (isset($item['children']) && is_array($item['children'])) {
                     $result = array_merge($result, formatPlainItems($item['children'], $newPath));
                 }
                 break;
@@ -71,9 +75,5 @@ function formatValue($value): string
         return '[complex value]';
     }
 
-    if (is_scalar($value)) {
-        return (string) $value;
-    }
-
-    throw new \InvalidArgumentException('Unexpected value type');
+    return is_scalar($value) ? (string) $value : '[complex value]';
 }

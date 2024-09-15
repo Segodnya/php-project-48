@@ -7,7 +7,7 @@ namespace Hexlet\Code\Formatters\Stylish;
  */
 function formatStylish(array $diff): string
 {
-    return "{\n" . formatStylishItems($diff, 1) . "}\n";
+    return "{\n" . formatStylishItems($diff, 1) . "}";
 }
 
 /**
@@ -16,14 +16,8 @@ function formatStylish(array $diff): string
 function formatStylishItem(array $item, int $depth): string
 {
     $indent = str_repeat('    ', $depth - 1);
-
-    $key = is_scalar($item['key'])
-        ? (string) $item['key']
-        : throw new \InvalidArgumentException('Key must be scalar');
-
-    $type = is_string($item['type'])
-        ? $item['type']
-        : throw new \InvalidArgumentException('Type must be string');
+    $key = array_key_exists('key', $item) && is_scalar($item['key']) ? (string) $item['key'] : '';
+    $type = array_key_exists('type', $item) && is_string($item['type']) ? $item['type'] : '';
 
     switch ($type) {
         case 'unchanged':
@@ -41,25 +35,11 @@ function formatStylishItem(array $item, int $depth): string
         case 'changed':
             $oldValue = formatValue($item['oldValue'], $depth);
             $newValue = formatValue($item['newValue'], $depth);
-            $result = '';
-
-            if ($oldValue === '') {
-                $result .= "{$indent}  - {$key}:\n";
-            } else {
-                $result .= "{$indent}  - {$key}: {$oldValue}\n";
-            }
-
-            $result .= "{$indent}  + {$key}: {$newValue}\n";
-
-            return $result;
+            return "{$indent}  - {$key}: {$oldValue}\n{$indent}  + {$key}: {$newValue}\n";
 
         case 'nested':
-            if (!is_array($item['children'])) {
-                throw new \Exception("Expected array for nested children");
-            }
-
-            $nestedValue = "{\n" . formatStylishItems($item['children'], $depth + 1) . "{$indent}    }";
-
+            $children = isset($item['children']) && is_array($item['children']) ? $item['children'] : [];
+            $nestedValue = "{\n" . formatStylishItems($children, $depth + 1) . "{$indent}    }";
             return "{$indent}    {$key}: {$nestedValue}\n";
 
         default:

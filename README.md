@@ -13,7 +13,7 @@
 
 ```
 ./bin/gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
-./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml
+./bin/gendiff tests/Fixtures/file1.yaml tests/Fixtures/file2.yaml
 ```
 or
 ```

@@ -33,16 +33,16 @@ ascii-upload:
 # Example usage
 
 run-json:
-	./bin/gendiff tests/Fixtures/file1.json tests/Fixtures/file2.json
+	./bin/gendiff tests/Fixtures/file5.json tests/Fixtures/file6.json
 
 run-yaml:
-	./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml
+	./bin/gendiff tests/Fixtures/file5.yaml tests/Fixtures/file6.yaml
 
 run-recursive:
-	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json
+	make run-json
 
 run-plain:
-	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=plain
+	./bin/gendiff tests/Fixtures/file5.json tests/Fixtures/file6.json --format=plain
 
 run-json-format:
-	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=json
+	./bin/gendiff tests/Fixtures/file5.json tests/Fixtures/file6.json --format=json
