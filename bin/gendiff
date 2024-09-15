@@ -4,7 +4,7 @@
 
 // Don't forget to run chmod +x bin/gendiff
 
-use function Hexlet\Code\Differ\genDiff;
+use function Differ\Differ\genDiff;
 
 $autoloadPathGlobal = __DIR__ . '/../../../autoload.php';
 $autoloadPathLocal = __DIR__ . '/../vendor/autoload.php';

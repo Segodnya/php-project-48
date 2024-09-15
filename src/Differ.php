@@ -1,10 +1,10 @@
 <?php
 
-namespace Hexlet\Code\Differ;
+namespace Differ\Differ;
 
 use function Functional\sort;
-use function Hexlet\Code\Formatters\format;
-use function Hexlet\Code\Parsers\parse;
+use function Differ\Formatters\format;
+use function Differ\Parsers\parse;
 
 /**
  * @typedef array{key: string, type: string, children?: array, oldValue?: mixed, newValue?: mixed} DiffNode

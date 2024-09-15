@@ -1,10 +1,10 @@
 <?php
 
-namespace Hexlet\Code\Formatters;
+namespace Differ\Formatters;
 
-use function Hexlet\Code\Formatters\Stylish\formatStylish;
-use function Hexlet\Code\Formatters\Plain\formatPlain;
-use function Hexlet\Code\Formatters\Json\formatJson;
+use function Differ\Formatters\Stylish\formatStylish;
+use function Differ\Formatters\Plain\formatPlain;
+use function Differ\Formatters\Json\formatJson;
 
 /**
  * Formats the diff array into a string representation.

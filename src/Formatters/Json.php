@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Code\Formatters\Json;
+namespace Differ\Formatters\Json;
 
 /**
  * Formats the diff array into a JSON string representation.
