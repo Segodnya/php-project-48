@@ -71,11 +71,7 @@ function formatValue($value, int $depth): string
         $result = "{\n";
 
         foreach ($value as $k => $v) {
-            if (!is_scalar($k)) {
-                throw new \InvalidArgumentException('Array key must be scalar');
-            }
-
-            $formattedK = (string) $k;
+            $formattedK = is_string($k) ? $k : json_encode($k);
             $formattedV = formatValue($v, $depth + 1);
             $result .= "{$indent}    {$formattedK}: {$formattedV}\n";
         }
@@ -97,44 +93,12 @@ function formatValue($value, int $depth): string
         return '';
     }
 
+    // Handle non-scalar values
     if (!is_scalar($value)) {
-        throw new \InvalidArgumentException('Value must be scalar');
+        $encoded = json_encode($value);
+
+        return $encoded !== false ? $encoded : '[Complex Value]';
     }
 
     return (string) $value;
-}
-
-/**
- * @param mixed $value
- */
-function stringify($value, int $depth): string
-{
-    if (is_null($value)) {
-        return 'null';
-    }
-
-    if (is_bool($value)) {
-        return $value ? 'true' : 'false';
-    }
-
-    if (is_string($value)) {
-        return $value;
-    }
-
-    if (is_scalar($value)) {
-        return (string) $value;
-    }
-
-    if (is_array($value)) {
-        $output = "{\n";
-        $indent = str_repeat('    ', $depth);
-        foreach ($value as $key => $val) {
-            $output .= $indent . '    ';
-            $output .= "{$key}: " . stringify($val, $depth + 1) . "\n";
-        }
-        $output .= $indent . "}";
-        return $output;
-    }
-
-    throw new \InvalidArgumentException("Value must be scalar or array");
 }
