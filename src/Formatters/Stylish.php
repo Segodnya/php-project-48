@@ -15,7 +15,15 @@ function formatStylish(array $diffTree): string
 /**
  * @param array<int, array<string, mixed>> $diffTree
  */
-function makeStylish(array $diffTree, int $depth = 1): string
+function makeStylish(array $diffTree): string
+{
+    return iter($diffTree, 1);
+}
+
+/**
+ * @param array<int, array<string, mixed>> $diffTree
+ */
+function iter(array $diffTree, int $depth): string
 {
     $result = array_map(
         function (array $node) use ($depth): string {
@@ -33,7 +41,7 @@ function makeStylish(array $diffTree, int $depth = 1): string
                         throw new \InvalidArgumentException("Children must be an array for nested type");
                     }
 
-                    return "{$indent}{$key}: {\n" . makeStylish($children, $depth + 1) . "\n{$indent}}";
+                    return "{$indent}{$key}: {\n" . iter($children, $depth + 1) . "\n{$indent}}";
 
                 case 'unchanged':
                     $value = stylishNodeValue($node['oldValue'] ?? null, $depth);
