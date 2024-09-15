@@ -14,7 +14,7 @@ function genDiff(string $pathToFirstFile, string $pathToSecondFile, string $form
 {
     $structure1 = parse(getFileExtension($pathToFirstFile), getFileContent($pathToFirstFile));
     $structure2 = parse(getFileExtension($pathToSecondFile), getFileContent($pathToSecondFile));
-    $diffTree = diff($structure1, $structure2);
+    $diffTree = getDiffTree($structure1, $structure2);
 
     return format($diffTree, $formatType);
 }
@@ -24,7 +24,7 @@ function genDiff(string $pathToFirstFile, string $pathToSecondFile, string $form
  * @param object $structure2
  * @return array<int, array<string, mixed>>
  */
-function diff(object $structure1, object $structure2): array
+function getDiffTree(object $structure1, object $structure2): array
 {
     $keys = array_keys(array_merge((array) $structure1, (array) $structure2));
     $sortedKeys = sort($keys, fn($a, $b) => $a <=> $b);
@@ -38,7 +38,7 @@ function diff(object $structure1, object $structure2): array
                 return [
                     'key' => $key,
                     'type' => 'nested',
-                    'children' => diff($structure1->$key, $structure2->$key),
+                    'children' => getDiffTree($structure1->$key, $structure2->$key),
                 ];
             }
 
