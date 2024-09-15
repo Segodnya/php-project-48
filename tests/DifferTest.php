@@ -114,4 +114,35 @@ class DifferTest extends TestCase
         $plainResult = format(diff($jsonData1, $jsonData2), 'plain');
         $this->assertEquals(trim($expectedPlainDiff), trim($plainResult));
     }
+
+    public function testJsonFormat(): void
+    {
+        $expectedJsonDiff = file_get_contents(self::FIXTURES_DIR . 'expected_json_diff.json');
+
+        if ($expectedJsonDiff === false) {
+            throw new \RuntimeException('Could not read expected JSON diff file.');
+        }
+
+        $file3Content = file_get_contents(self::FIXTURES_DIR . 'file3.json');
+        $file4Content = file_get_contents(self::FIXTURES_DIR . 'file4.json');
+
+        if ($file3Content === false || $file4Content === false) {
+            throw new \RuntimeException('Could not read JSON files.');
+        }
+
+        $jsonData1 = json_decode($file3Content, true);
+        $jsonData2 = json_decode($file4Content, true);
+
+        if (!is_array($jsonData1) || !is_array($jsonData2)) {
+            throw new \RuntimeException('Could not decode JSON files.');
+        }
+
+        $jsonResult = format(diff($jsonData1, $jsonData2), 'json');
+
+        // Decode both expected and actual results to compare as PHP arrays
+        $expectedArray = json_decode($expectedJsonDiff, true);
+        $actualArray = json_decode($jsonResult, true);
+
+        $this->assertEquals($expectedArray, $actualArray);
+    }
 }

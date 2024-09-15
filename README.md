@@ -38,3 +38,7 @@ make run-yaml
 - Plain Format
 
 [![asciicast](https://asciinema.org/a/676108.svg)](https://asciinema.org/a/676108)
+
+- JSON Format
+
+[![asciicast](https://asciinema.org/a/676111.svg)](https://asciinema.org/a/676111)

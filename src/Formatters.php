@@ -4,6 +4,7 @@ namespace Hexlet\Code\Formatters;
 
 use function Hexlet\Code\Formatters\Stylish\formatStylish;
 use function Hexlet\Code\Formatters\Plain\formatPlain;
+use function Hexlet\Code\Formatters\Json\formatJson;
 
 /**
  * Formats the diff array into a string representation.
@@ -20,6 +21,8 @@ function format(array $diff, string $format = 'stylish'): string
             return formatStylish($diff);
         case 'plain':
             return formatPlain($diff);
+        case 'json':
+            return formatJson($diff);
         default:
             throw new \Exception("Unsupported format: $format");
     }

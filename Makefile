@@ -43,3 +43,6 @@ run-recursive:
 
 run-plain:
 	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=plain
+
+run-json-format:
+	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=json
