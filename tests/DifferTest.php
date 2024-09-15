@@ -39,10 +39,10 @@ class DifferTest extends TestCase
     public function diffDataProvider(): array
     {
         return [
-            'JSON and YAML to Plain' => ['file5.json', 'file6.yaml', 'plain', 'diff.plain'],
-            'YAML and JSON to Stylish' => ['file5.yaml', 'file6.json', 'stylish', 'diff.stylish'],
-            'JSON and JSON to Plain' => ['file5.json', 'file6.json', 'plain', 'diff.plain'],
-            'YAML and YAML to Stylish' => ['file5.yaml', 'file6.yaml', 'stylish', 'diff.stylish'],
+            'JSON and YAML to Plain' => ['file1.json', 'file2.yaml', 'plain', 'diff.plain'],
+            'YAML and JSON to Stylish' => ['file1.yaml', 'file2.json', 'stylish', 'diff.stylish'],
+            'JSON and JSON to Plain' => ['file1.json', 'file2.json', 'plain', 'diff.plain'],
+            'YAML and YAML to Stylish' => ['file1.yaml', 'file2.yaml', 'stylish', 'diff.stylish'],
         ];
     }
 
