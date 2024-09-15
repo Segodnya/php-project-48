@@ -29,6 +29,8 @@ class DifferTest extends TestCase
             'YAML and JSON to Stylish' => ['file1.yaml', 'file2.json', 'stylish', 'diff.stylish'],
             'JSON and JSON to Plain' => ['file1.json', 'file2.json', 'plain', 'diff.plain'],
             'YAML and YAML to Stylish' => ['file1.yaml', 'file2.yaml', 'stylish', 'diff.stylish'],
+            'JSON and JSON to JSON' => ['file1.json', 'file2.json', 'json', 'diff.json'],
+            'YAML and YAML to JSON' => ['file1.yaml', 'file2.yaml', 'json', 'diff.json'],
         ];
     }
 }
