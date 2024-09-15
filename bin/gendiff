@@ -4,9 +4,7 @@
 
 // Don't forget to run chmod +x bin/gendiff
 
-use function Differ\Differ\getFileData;
-use function Hexlet\Code\Differ\diff;
-use function Hexlet\Code\Formatters\format;
+use function Hexlet\Code\Differ\genDiff;
 
 $autoloadPathGlobal = __DIR__ . '/../../../autoload.php';
 $autoloadPathLocal = __DIR__ . '/../vendor/autoload.php';
@@ -45,13 +43,9 @@ if (!is_string($firstFilePath) || !is_string($secondFilePath)) {
 
 // Parse files
 try {
-    $firstData = getFileData($firstFilePath);
-    $secondData = getFileData($secondFilePath);
+    $diff = genDiff($firstFilePath, $secondFilePath);
 
-    $diff = diff($firstData, $secondData);
-    $formattedDiff = format($diff, $arguments['--format'] ?? 'stylish');
-
-    echo $formattedDiff . PHP_EOL;
+    echo $diff . PHP_EOL;
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
     exit(1);

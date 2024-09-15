@@ -49,7 +49,7 @@ function formatJsonRecursive(array $diff): array
                 ];
                 break;
 
-            case 'add':
+            case 'added':
                 $result[$key] = [
                     'type' => 'added',
                     'value' => $item['value']

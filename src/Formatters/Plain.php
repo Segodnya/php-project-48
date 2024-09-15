@@ -2,62 +2,54 @@
 
 namespace Hexlet\Code\Formatters\Plain;
 
+use function Functional\flat_map;
+
 /**
- * @param array<int, array<string, mixed>> $diff
+ * @param array<mixed> $diffTree
+ * @return string
  */
-function formatPlain(array $diff): string
+function formatPlain(array $diffTree): string
 {
-    return rtrim(implode("\n", formatPlainItems($diff)));
+    $result = array_filter(makePlain($diffTree));
+
+    return implode("\n", $result);
 }
 
 /**
- * @param array<int, array<string, mixed>> $items
- * @param string $path
- * @return array<int, string>
+ * @param array<mixed> $diffTree
+ * @param string $parentKey
+ * @return array<string>
  */
-function formatPlainItems(array $items, string $path = ''): array
+function makePlain(array $diffTree, string $parentKey = ''): array
 {
-    $result = [];
+    return flat_map(
+        $diffTree,
+        function ($node) use ($parentKey) {
+            $type = $node['type'] ?? null;
+            $key = $node['key'] ?? null;
 
-    foreach ($items as $item) {
-        if (!is_array($item) || !isset($item['key']) || !isset($item['type'])) {
-            continue;
+            switch ($type) {
+                case 'nested':
+                    return makePlain($node['children'], "{$parentKey}{$key}.");
+                case 'unchanged':
+                    return '';
+                case 'changed':
+                    $oldValue = toString($node['oldValue']);
+                    $newValue = toString($node['newValue']);
+                    return "Property '{$parentKey}{$key}' was updated. From $oldValue to $newValue";
+                case 'added':
+                    $value = toString($node['newValue']);
+                    return "Property '{$parentKey}{$key}' was added with value: $value";
+                case 'deleted':
+                    return "Property '{$parentKey}{$key}' was removed";
+                default:
+                    throw new \Exception("Unknown node type \"$type\".");
+            }
         }
-
-        $key = is_scalar($item['key']) ? (string) $item['key'] : '[complex value]';
-        $newPath = $path ? "{$path}.{$key}" : $key;
-
-        switch ($item['type']) {
-            case 'add':
-                $value = formatValue($item['value'] ?? null);
-                $result[] = "Property '{$newPath}' was added with value: {$value}";
-                break;
-
-            case 'deleted':
-                $result[] = "Property '{$newPath}' was removed";
-                break;
-
-            case 'changed':
-                $oldValue = formatValue($item['oldValue'] ?? null);
-                $newValue = formatValue($item['newValue'] ?? null);
-                $result[] = "Property '{$newPath}' was updated. From {$oldValue} to {$newValue}";
-                break;
-
-            case 'nested':
-                if (isset($item['children']) && is_array($item['children'])) {
-                    $result = array_merge($result, formatPlainItems($item['children'], $newPath));
-                }
-                break;
-        }
-    }
-
-    return $result;
+    );
 }
 
-/**
- * @param mixed $value
- */
-function formatValue($value): string
+function toString(mixed $value): string
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
@@ -68,12 +60,12 @@ function formatValue($value): string
     }
 
     if (is_string($value)) {
-        return "'{$value}'";
+        return "'$value'";
     }
 
-    if (is_array($value)) {
-        return '[complex value]';
+    if (is_numeric($value)) {
+        return (string) $value;
     }
 
-    return is_scalar($value) ? (string) $value : '[complex value]';
+    return '[complex value]';
 }

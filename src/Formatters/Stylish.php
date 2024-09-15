@@ -3,84 +3,85 @@
 namespace Hexlet\Code\Formatters\Stylish;
 
 /**
- * @param array<int, array<string, mixed>> $diff
+ * @param array<int, array<string, mixed>> $diffTree
  */
-function formatStylish(array $diff): string
+function formatStylish(array $diffTree): string
 {
-    return "{\n" . formatStylishItems($diff, 1) . "}";
+    $result = makeStylish($diffTree);
+
+    return "{\n$result\n}";
 }
 
 /**
- * @param array<string, mixed> $item
+ * @param array<int, array<string, mixed>> $diffTree
  */
-function formatStylishItem(array $item, int $depth): string
+function makeStylish(array $diffTree, int $depth = 1): string
 {
-    $indent = str_repeat('    ', $depth - 1);
-    $key = array_key_exists('key', $item) && is_scalar($item['key']) ? (string) $item['key'] : '';
-    $type = array_key_exists('type', $item) && is_string($item['type']) ? $item['type'] : '';
+    $result = array_map(
+        function (array $node) use ($depth): string {
+            $type = is_string($node['type'] ?? null) ? $node['type'] : '';
+            $key = is_string($node['key'] ?? null) ? $node['key'] : '';
 
-    switch ($type) {
-        case 'unchanged':
-            $value = formatValue($item['value'], $depth);
-            return "{$indent}    {$key}: {$value}\n";
+            $indent = getIndent($depth);
+            $smallIndent = getSmallIndent($depth);
 
-        case 'deleted':
-            $value = formatValue($item['value'], $depth);
-            return "{$indent}  - {$key}: {$value}\n";
+            switch ($type) {
+                case 'nested':
+                    $children = $node['children'] ?? [];
+                    assert(is_array($children));
+                    return "{$indent}{$key}: {\n" . makeStylish($children, $depth + 1) . "\n{$indent}}";
 
-        case 'add':
-            $value = formatValue($item['value'], $depth);
-            return "{$indent}  + {$key}: {$value}\n";
+                case 'unchanged':
+                    $value = stylishNodeValue($node['oldValue'] ?? null, $depth);
+                    return "{$indent}{$key}: {$value}";
 
-        case 'changed':
-            $oldValue = formatValue($item['oldValue'], $depth);
-            $newValue = formatValue($item['newValue'], $depth);
-            return "{$indent}  - {$key}: {$oldValue}\n{$indent}  + {$key}: {$newValue}\n";
+                case 'changed':
+                    $oldValue = stylishNodeValue($node['oldValue'] ?? null, $depth);
+                    $newValue = stylishNodeValue($node['newValue'] ?? null, $depth);
+                    return "{$smallIndent}- {$key}: {$oldValue}\n"
+                        . "{$smallIndent}+ {$key}: {$newValue}";
 
-        case 'nested':
-            $children = isset($item['children']) && is_array($item['children']) ? $item['children'] : [];
-            $nestedValue = "{\n" . formatStylishItems($children, $depth + 1) . "{$indent}    }";
-            return "{$indent}    {$key}: {$nestedValue}\n";
+                case 'added':
+                    $value = stylishNodeValue($node['newValue'] ?? null, $depth);
+                    return "{$smallIndent}+ {$key}: {$value}";
 
-        default:
-            throw new \Exception("Unknown diff type: {$type}");
-    }
+                case 'deleted':
+                    $value = stylishNodeValue($node['oldValue'] ?? null, $depth);
+                    return "{$smallIndent}- {$key}: {$value}";
+
+                default:
+                    throw new \Exception("Unknown node type \"{$type}\".");
+            }
+        },
+        $diffTree
+    );
+
+    return implode("\n", $result);
 }
 
-/**
- * @param array<int, array<string, mixed>> $items
- */
-function formatStylishItems(array $items, int $depth): string
+function stylishNodeValue(mixed $value, int $depth): string
 {
-    $result = '';
-
-    foreach ($items as $item) {
-        $result .= formatStylishItem($item, $depth);
+    if (!is_object($value)) {
+        return toString($value);
     }
 
-    return $result;
+    $keys = array_keys(get_object_vars($value));
+
+    $result = array_map(
+        function (string $key) use ($value, $depth): string {
+            $indent = getIndent($depth + 1);
+            return "{$indent}{$key}: " . stylishNodeValue($value->$key, $depth + 1);
+        },
+        $keys
+    );
+
+    $endIndent = getIndent($depth);
+
+    return "{\n" . implode("\n", $result) . "\n{$endIndent}}";
 }
 
-/**
- * @param mixed $value
- */
-function formatValue($value, int $depth): string
+function toString(mixed $value): string
 {
-    if (is_array($value)) {
-        $indent = str_repeat('    ', $depth);
-        $result = "{\n";
-
-        foreach ($value as $k => $v) {
-            $formattedK = is_string($k) ? $k : json_encode($k);
-            $formattedV = formatValue($v, $depth + 1);
-            $result .= "{$indent}    {$formattedK}: {$formattedV}\n";
-        }
-
-        $result .= "{$indent}}";
-
-        return $result;
-    }
-
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
     }
@@ -89,16 +90,25 @@ function formatValue($value, int $depth): string
         return 'null';
     }
 
-    if ($value === '') {
-        return '';
+    if (is_string($value)) {
+        return $value;
     }
 
-    // Handle non-scalar values
-    if (!is_scalar($value)) {
-        $encoded = json_encode($value);
-
-        return $encoded !== false ? $encoded : '[Complex Value]';
+    if (is_scalar($value)) {
+        return (string) $value;
     }
 
-    return (string) $value;
+    return json_encode($value) ?: '';
+}
+
+function getSmallIndent(int $depth): string
+{
+    return getIndent($depth, 2);
+}
+
+function getIndent(int $depth = 1, int $shift = 0): string
+{
+    $baseIndentSize = 4;
+
+    return str_repeat(' ', $baseIndentSize * $depth - $shift);
 }

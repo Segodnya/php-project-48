@@ -6,7 +6,6 @@
   "autoload": {
     "files": [
       "src/Differ.php",
-      "src/Main.php",
       "src/Parsers.php",
       "src/Formatters.php",
       "src/Formatters/Stylish.php",
@@ -33,6 +32,7 @@
   },
   "require": {
     "docopt/docopt": "^1.0",
+    "lstrojny/functional-php": "^1.17",
     "symfony/yaml": "^7.1"
   },
   "require-dev": {
