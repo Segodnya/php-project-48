@@ -103,3 +103,38 @@ function formatValue($value, int $depth): string
 
     return (string) $value;
 }
+
+/**
+ * @param mixed $value
+ */
+function stringify($value, int $depth): string
+{
+    if (is_null($value)) {
+        return 'null';
+    }
+
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
+    }
+
+    if (is_string($value)) {
+        return $value;
+    }
+
+    if (is_scalar($value)) {
+        return (string) $value;
+    }
+
+    if (is_array($value)) {
+        $output = "{\n";
+        $indent = str_repeat('    ', $depth);
+        foreach ($value as $key => $val) {
+            $output .= $indent . '    ';
+            $output .= "{$key}: " . stringify($val, $depth + 1) . "\n";
+        }
+        $output .= $indent . "}";
+        return $output;
+    }
+
+    throw new \InvalidArgumentException("Value must be scalar or array");
+}
