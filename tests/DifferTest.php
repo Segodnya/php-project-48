@@ -84,14 +84,34 @@ class DifferTest extends TestCase
         $result = format(diff($data1, $data2));
         $this->assertEquals($expectedDiff, trim($result));
 
-        // Test with different formats
+        // Test with different formats (stylish)
         $stylishResult = format(diff($data1, $data2), 'stylish');
         $this->assertEquals($expectedDiff, trim($stylishResult));
+    }
 
-        // $plainResult = format(diff($data1, $data2), 'plain');
-        // $this->assertIsString($plainResult);
+    public function testPlainFormat(): void
+    {
+        $expectedPlainDiff = file_get_contents(self::FIXTURES_DIR . 'expected_plain_diff.txt');
 
-        // $jsonResult = format(diff($data1, $data2), 'json');
-        // $this->assertJson($jsonResult);
+        if ($expectedPlainDiff === false) {
+            throw new \RuntimeException('Could not read expected plain diff file.');
+        }
+
+        $file3Content = file_get_contents(self::FIXTURES_DIR . 'file3.json');
+        $file4Content = file_get_contents(self::FIXTURES_DIR . 'file4.json');
+
+        if ($file3Content === false || $file4Content === false) {
+            throw new \RuntimeException('Could not read JSON files.');
+        }
+
+        $jsonData1 = json_decode($file3Content, true);
+        $jsonData2 = json_decode($file4Content, true);
+
+        if (!is_array($jsonData1) || !is_array($jsonData2)) {
+            throw new \RuntimeException('Could not decode JSON files.');
+        }
+
+        $plainResult = format(diff($jsonData1, $jsonData2), 'plain');
+        $this->assertEquals(trim($expectedPlainDiff), trim($plainResult));
     }
 }

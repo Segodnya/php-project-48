@@ -34,3 +34,7 @@ make run-yaml
 - Recursive
 
 [![asciicast](https://asciinema.org/a/676076.svg)](https://asciinema.org/a/676076)
+
+- Plain Format
+
+[![asciicast](https://asciinema.org/a/676108.svg)](https://asciinema.org/a/676108)

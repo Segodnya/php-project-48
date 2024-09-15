@@ -22,6 +22,14 @@ test-coverage-text:
 stan:
 	vendor/bin/phpstan analyse src tests bin --level 9
 
+# Record a Cast
+
+ascii-rec:
+	asciinema rec demo.cast
+
+ascii-upload:
+	asciinema upload demo.cast
+
 # Example usage
 
 run-json:
@@ -31,4 +39,7 @@ run-yaml:
 	./bin/gendiff tests/Fixtures/file1.yml tests/Fixtures/file2.yaml
 
 run-recursive:
+	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json
+
+run-plain:
 	./bin/gendiff tests/Fixtures/file3.json tests/Fixtures/file4.json --format=plain

@@ -36,8 +36,5 @@ function genDiff(string $pathFile1, string $pathFile2, string $format = 'stylish
 
     $diff = diff($arrFile1, $arrFile2);
 
-    $formattedDiff = format($diff, $format);
-
-    // Ensure the formatted diff is always a string
-    return $formattedDiff;
+    return format($diff, $format);
 }
