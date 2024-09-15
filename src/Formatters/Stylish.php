@@ -19,8 +19,8 @@ function makeStylish(array $diffTree, int $depth = 1): string
 {
     $result = array_map(
         function (array $node) use ($depth): string {
-            $type = is_string($node['type'] ?? null) ? $node['type'] : '';
-            $key = is_string($node['key'] ?? null) ? $node['key'] : '';
+            $type = array_key_exists('type', $node) ? toString($node['type']) : '';
+            $key = array_key_exists('key', $node) ? toString($node['key']) : '';
 
             $indent = getIndent($depth);
             $smallIndent = getSmallIndent($depth);
@@ -98,7 +98,8 @@ function toString(mixed $value): string
         return (string) $value;
     }
 
-    return json_encode($value) ?: '';
+    $encoded = json_encode($value);
+    return $encoded !== false ? $encoded : '';
 }
 
 function getSmallIndent(int $depth): string
