@@ -19,13 +19,10 @@ function format(array $diff, string $format = 'stylish'): string
     switch ($format) {
         case 'stylish':
             return formatStylish($diff);
-
         case 'plain':
             return formatPlain($diff);
-
         case 'json':
             return formatJson($diff);
-
         default:
             throw new \Exception("Unsupported format: $format");
     }

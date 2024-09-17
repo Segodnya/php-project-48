@@ -4,6 +4,8 @@ namespace Differ\Differ;
 
 use function Functional\sort;
 use function Differ\Formatters\format;
+use function Differ\Parsers\getFileContent;
+use function Differ\Parsers\getFileExtension;
 use function Differ\Parsers\parse;
 
 /**
@@ -61,30 +63,4 @@ function getDiffTree(object $structure1, object $structure2): array
         },
         $sortedKeys
     );
-}
-
-function getFileExtension(string $path): string
-{
-    if (file_exists($path)) {
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-    } else {
-        throw new \Exception("File $path not exists.");
-    }
-
-    return $extension;
-}
-
-function getFileContent(string $path): string
-{
-    if (is_readable($path)) {
-        $fileData = file_get_contents($path);
-    } else {
-        throw new \Exception("File $path not exists or not readable.");
-    }
-
-    if (is_string($fileData)) {
-        return $fileData;
-    } else {
-        throw new \Exception("File $path content is not in string format.");
-    }
 }

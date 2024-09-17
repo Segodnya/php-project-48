@@ -31,22 +31,17 @@ function makePlain(array $diffTree, string $parentKey = ''): array
             switch ($type) {
                 case 'nested':
                     return makePlain($node['children'], "{$parentKey}{$key}.");
-
                 case 'unchanged':
                     return '';
-
                 case 'changed':
                     $oldValue = toString($node['oldValue']);
                     $newValue = toString($node['newValue']);
                     return "Property '{$parentKey}{$key}' was updated. From $oldValue to $newValue";
-
                 case 'added':
                     $value = toString($node['newValue']);
                     return "Property '{$parentKey}{$key}' was added with value: $value";
-
                 case 'deleted':
                     return "Property '{$parentKey}{$key}' was removed";
-
                 default:
                     throw new \Exception("Unknown node type \"$type\".");
             }

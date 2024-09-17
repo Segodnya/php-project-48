@@ -15,7 +15,6 @@ if (file_exists($autoloadPathGlobal)) {
     require_once $autoloadPathLocal;
 }
 
-
 $doc = <<<DOC
 Generate diff
 
@@ -32,20 +31,12 @@ DOC;
 
 $arguments = Docopt::handle($doc);
 
-$firstFilePath = $arguments['<firstFile>'];
-$secondFilePath = $arguments['<secondFile>'];
+$firstFilePath = (string) $arguments['<firstFile>'];
+$secondFilePath = (string) $arguments['<secondFile>'];
 $format = (string) $arguments['--format'];
 
-// Validate paths
-if (!is_string($firstFilePath) || !is_string($secondFilePath)) {
-  echo "Error: Both file paths must be provided as strings." . PHP_EOL;
-  exit(1);
-}
-
-// Parse files
 try {
     $diff = genDiff($firstFilePath, $secondFilePath, $format);
-
     echo $diff . PHP_EOL;
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
